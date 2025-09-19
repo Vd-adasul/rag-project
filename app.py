@@ -66,3 +66,9 @@ def ask():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+@app.route("/clear", methods=["POST"])
+def clear():
+    session["history"] = []
+    return jsonify({"status": "cleared"})

@@ -2,15 +2,24 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Students AI Assistant</title>
+  <title>Linguistic Chat Bot – 24/7 Student Assistant</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <div class="chat-container">
-    <h2>💬 Student AI Assistant</h2>
-    <div id="chat-box"></div>
+  <div class="chat-wrapper">
+    <div class="chat-header">
+      <h2>🤖 Linguistic Chat Bot – 24/7 Student Assistant</h2>
+      <button id="clear-btn" onclick="clearChat()">Clear Chat</button>
+    </div>
+
+    <div id="chat-box" class="chat-box">
+      <div class="welcome-msg">
+        <p>Welcome to Linguistic Chat Bot!<br>Ask me anything in your preferred language.</p>
+      </div>
+    </div>
+
     <div class="input-area">
-      <input type="text" id="user-input" placeholder="Ask something..." autofocus>
+      <input type="text" id="user-input" placeholder="Type your message..." autofocus>
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
@@ -21,10 +30,18 @@
       const message = input.value.trim();
       if (!message) return;
 
-      // Show user message
       const chatBox = document.getElementById("chat-box");
-      chatBox.innerHTML += `<div class='user-msg'><b>You:</b> ${message}</div>`;
 
+      // Remove welcome text if present
+      const welcome = document.querySelector(".welcome-msg");
+      if (welcome) welcome.remove();
+
+      // Show user message
+      chatBox.innerHTML += `
+        <div class="msg user-msg">
+          <div class="msg-text">${message}</div>
+          <div class="msg-time">${new Date().toLocaleTimeString()}</div>
+        </div>`;
       input.value = "";
 
       // Send to backend
@@ -36,8 +53,23 @@
       const data = await res.json();
 
       // Show AI reply
-      chatBox.innerHTML += `<div class='ai-msg'><b>AI:</b> ${data.answer}</div>`;
+      chatBox.innerHTML += `
+        <div class="msg ai-msg">
+          <div class="msg-text">${data.answer}</div>
+          <div class="msg-time">${new Date().toLocaleTimeString()}</div>
+        </div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function clearChat() {
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML = `
+        <div class="welcome-msg">
+          <p>Welcome to Linguistic Chat Bot!<br>Ask me anything in your preferred language.</p>
+        </div>`;
+      
+      // Clear backend session
+      await fetch("/clear", { method: "POST" });
     }
 
     // Allow Enter key

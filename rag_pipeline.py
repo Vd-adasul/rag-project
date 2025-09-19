@@ -22,6 +22,8 @@ def rag_query(question: str) -> str:
 Answer the question using the documents below.
 If unsure, say you don’t know.
 
+⚠️ IMPORTANT: Always respond in the same language as the user's question.
+
 Documents:
 {context}
 
