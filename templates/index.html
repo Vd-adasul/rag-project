@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Students AI Assistant</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="chat-container">
+    <h2>💬 Student AI Assistant</h2>
+    <div id="chat-box"></div>
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Ask something..." autofocus>
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Show user message
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class='user-msg'><b>You:</b> ${message}</div>`;
+
+      input.value = "";
+
+      // Send to backend
+      const res = await fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json();
+
+      // Show AI reply
+      chatBox.innerHTML += `<div class='ai-msg'><b>AI:</b> ${data.answer}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Allow Enter key
+    document.getElementById("user-input")
+      .addEventListener("keypress", function(e) {
+        if (e.key === "Enter") sendMessage();
+      });
+  </script>
+</body>
+</html>
