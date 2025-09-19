@@ -4,5 +4,6 @@ langchain
 faiss-cpu
 pypdf
 python-dotenv
+sentence_transformers
 
 
