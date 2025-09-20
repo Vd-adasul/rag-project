@@ -6,4 +6,5 @@ pypdf
 python-dotenv
 sentence_transformers
 
+python-telegram-bot
 
