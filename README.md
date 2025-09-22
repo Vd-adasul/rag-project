@@ -19,4 +19,12 @@ The chatbot can answer questions from your PDF documents and remembers conversat
 git clone https://github.com/YOUR_USERNAME/rag-project.git
 cd rag-project
 
+### 2. Create a virtual environment
+python -m venv venv
+# Activate
+venv\Scripts\activate      # Windows
+# OR
+source venv/bin/activate   # Mac/Linux
 
+### 3.Install dependencies
+cp .env.example .env
